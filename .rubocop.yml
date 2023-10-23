@@ -24,3 +24,6 @@ Layout/LineLength:
 
 RSpec/ExampleLength:
   Enabled: false
+
+RSpec/DescribedClass:
+  Enabled: false

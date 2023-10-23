@@ -5,12 +5,12 @@ module SfConnect
   module Downloader
     extend ActiveSupport::Concern
 
-    def download_from_salesforce
-      fetch.update
-    end
-
     def fetch
       self.class.fetch(salesforce_object_id)
+    end
+
+    def download_from_salesforce
+      self.class.download_salesforce_record(salesforce_object_id)
     end
 
     class_methods do
@@ -19,17 +19,20 @@ module SfConnect
       end
 
       def fetch(id, field = nil)
-        salesforce_download_record(
-          SfConnect.find(salesforce_object_name, id, field)
-        )
+        salesforce_fields.fetch(id, field)
       end
 
-      def fetch_all(query = "")
+      def fetch_all(query = "", &)
         return enum_for(:fetch_all, query) unless block_given?
 
-        SfConnect.query(salesforce_query + query).each do |sobject|
-          yield salesforce_download_record(sobject)
-        end
+        salesforce_fields.fetch_all(query, &)
+      end
+
+      def download_salesforce_record(salesforce_object_id)
+        result = fetch(salesforce_object_id)
+        record = find_or_initialize_from_salesforce(result.binding_attributes)
+        record.update(result.binding_attributes)
+        record
       end
 
       def download_salesforce_records(batch_size = 1000)

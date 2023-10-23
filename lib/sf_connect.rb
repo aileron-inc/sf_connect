@@ -7,9 +7,12 @@ require "active_support/all"
 module SfConnect
   extend ActiveSupport::Autoload
   autoload :Define
+  autoload :Fields
   autoload :Uploader
   autoload :Downloader
-  autoload :DownloadRecord
+
+  # fetch salseforce result
+  Result = Struct.new(:record, :binding_attributes, keyword_init: true)
 
   class << self
     def define(salesforce_object_name, where: nil, **fields, &)

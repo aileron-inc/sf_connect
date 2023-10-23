@@ -1,6 +1,11 @@
-# frozen_string_literal: true
-
 require "sf_connect"
+require "active_support/all"
+require "active_model"
+require "restforce"
+require "pry"
+require "simplecov"
+
+SimpleCov.start
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
