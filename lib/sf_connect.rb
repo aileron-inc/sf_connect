@@ -7,12 +7,10 @@ require "active_support/all"
 module SfConnect
   extend ActiveSupport::Autoload
   autoload :Define
+  autoload :Payload
   autoload :Fields
   autoload :Uploader
   autoload :Downloader
-
-  # upload and download payload
-  Payload = Struct.new(:record, :for_upload, :for_download, keyword_init: true)
 
   class << self
     def define(salesforce_object_name, where: nil, **fields, &)
