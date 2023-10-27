@@ -35,9 +35,13 @@ module SfConnect
         record
       end
 
+      def import_records_for_salesforce(records)
+        upsert_all records
+      end
+
       def download_salesforce_records(batch_size = 1000)
         fetch_all.each_slice(batch_size) do |records|
-          upsert_all records.map(&:for_download)
+          import_records_for_salesforce records.map(&:for_download)
         end
       end
     end

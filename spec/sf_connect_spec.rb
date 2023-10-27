@@ -3,13 +3,18 @@ RSpec.describe SfConnect do
     Class.new do
       include ActiveModel::Model
       include ActiveModel::Attributes
-      include SfConnect.define(
+      include(SfConnect.define(
         :Contact,
         Email: :email,
         LastName: :last_name,
         FirstName: :first_name,
-        Name: nil
-      )
+        Name: :name
+      ) do
+        def for_upload
+          super.except(:Name)
+        end
+      end)
+      attribute :name
       attribute :id
       attribute :email
       attribute :last_name
@@ -81,7 +86,8 @@ RSpec.describe SfConnect do
         {
           email: "sf_connect@example.com",
           first_name: "John",
-          last_name: "Doe"
+          last_name: "Doe",
+          name: "John Doe"
         }
       ]
     )
