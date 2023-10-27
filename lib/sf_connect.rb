@@ -11,8 +11,8 @@ module SfConnect
   autoload :Uploader
   autoload :Downloader
 
-  # fetch salseforce result
-  Result = Struct.new(:record, :binding_attributes, keyword_init: true)
+  # upload and download payload
+  Payload = Struct.new(:record, :for_upload, :for_download, keyword_init: true)
 
   class << self
     def define(salesforce_object_name, where: nil, **fields, &)

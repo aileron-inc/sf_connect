@@ -10,13 +10,13 @@ module SfConnect
     end
 
     def upload_payload_for_salesforce
-      self.class.salesforce_fields.convert_to_salesforce(self)
+      self.class.salesforce_fields.payload_for_upload(self)
     end
 
     class_methods do
       def upload_salesforce_record(**attributes)
         create_salesforce_record(
-          salesforce_fields.convert_to_salesforce_from_hash(attributes)
+          salesforce_fields.payload_for_upload_from_hash(attributes)
         )
       end
 

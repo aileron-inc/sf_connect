@@ -29,15 +29,15 @@ module SfConnect
       end
 
       def download_salesforce_record(salesforce_object_id)
-        result = fetch(salesforce_object_id)
-        record = find_or_initialize_from_salesforce(result.binding_attributes)
-        record.update(result.binding_attributes)
+        payload = fetch(salesforce_object_id)
+        record = find_or_initialize_from_salesforce(payload.for_download)
+        record.update(payload.for_download)
         record
       end
 
       def download_salesforce_records(batch_size = 1000)
         fetch_all.each_slice(batch_size) do |records|
-          upsert_all records.map(&:binding_attributes)
+          upsert_all records.map(&:for_download)
         end
       end
     end
