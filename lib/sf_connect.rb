@@ -17,24 +17,32 @@ module SfConnect
       SfConnect::Define.new(salesforce_object_name, where:, fields:, &).call
     end
 
+    def connect
+      yield Restforce.new
+    end
+
     def query(soql)
-      Restforce.new.query(soql)
+      connect { |restforce| restforce.query(soql) }
     end
 
     def find(salesforce_object_name, id, field)
-      Restforce.new.find(salesforce_object_name, id, field)
+      connect { |restforce| restforce.find(salesforce_object_name, id, field) }
     end
 
     def create!(salesforce_object_name, payload)
-      Restforce.new.create!(
-        salesforce_object_name, payload
-      )
+      connect do |restforce|
+        restforce.create!(
+          salesforce_object_name, payload
+        )
+      end
     end
 
     def update!(salesforce_object_name, id, payload)
-      Restforce.new.update!(
-        salesforce_object_name, { Id: id, **payload }
-      )
+      connect do |restforce|
+        restforce.update!(
+          salesforce_object_name, { Id: id, **payload }
+        )
+      end
     end
   end
 end
